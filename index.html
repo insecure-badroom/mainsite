@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Insecure Badroom</title>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Roboto', sans-serif;
+			text-align: center;
+			margin: 0;
+			background-color: #1e1f22;
+			color: white;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			padding: 20px;
+		}
+
+		canvas {
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: -1;
+		}
+
+		h1 {
+			font-size: 64px;
+			margin-bottom: 10px;
+			user-select: none;
+			color: #ff2244;
+			font-weight: 700;
+			text-shadow: 0 0 20px rgba(255, 34, 68, 0.5),
+				0 0 40px rgba(255, 34, 68, 0.3);
+			letter-spacing: 2px;
+		}
+
+		.subtitle {
+			font-size: 28px;
+			margin-bottom: 30px;
+			margin-top: 0;
+			background: linear-gradient(45deg, #ff2244, #ff6b88, #ff2244);
+			background-size: 200% 200%;
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			font-weight: 400;
+			font-style: italic;
+			animation: gradientShift 3s ease infinite;
+			letter-spacing: 1px;
+		}
+
+		@keyframes gradientShift {
+			0% {
+				background-position: 0% 50%;
+			}
+
+			50% {
+				background-position: 100% 50%;
+			}
+
+			100% {
+				background-position: 0% 50%;
+			}
+		}
+
+		.projects-btn {
+			display: inline-block;
+			margin: 30px 0;
+			padding: 15px 40px;
+			background: linear-gradient(135deg, #ff2244, #ff6b88);
+			color: white;
+			text-decoration: none;
+			font-size: 20px;
+			font-weight: 700;
+			border-radius: 50px;
+			box-shadow: 0 4px 15px rgba(255, 34, 68, 0.4);
+			transition: all 0.3s ease;
+			position: relative;
+			overflow: hidden;
+			letter-spacing: 1px;
+		}
+
+		.projects-btn:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+			transition: left 0.5s ease;
+		}
+
+		.projects-btn:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 6px 25px rgba(255, 34, 68, 0.6);
+		}
+
+		.projects-btn:hover:before {
+			left: 100%;
+		}
+
+		img {
+			max-width: 500px;
+			width: 90%;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+		}
+
+		.users-container {
+			margin-top: 50px;
+			display: flex;
+			gap: 30px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		.user-card {
+			background: rgba(41, 42, 45, 0.8);
+			border-radius: 15px;
+			padding: 20px;
+			width: 200px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+			transition: transform 0.3s ease;
+		}
+
+		.user-card:hover {
+			transform: translateY(-5px);
+		}
+
+		.user-avatar {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			margin: 0 auto 15px;
+			display: block;
+			border: 3px solid #4b8cc0;
+		}
+
+		.user-name {
+			font-size: 18px;
+			font-weight: 700;
+			margin-bottom: 5px;
+			color: #fff;
+		}
+
+		.user-id {
+			font-size: 12px;
+			color: #888;
+			margin-bottom: 10px;
+		}
+
+		.user-status {
+			display: inline-block;
+			padding: 5px 12px;
+			border-radius: 12px;
+			font-size: 12px;
+			font-weight: 600;
+		}
+
+		.status-online {
+			background: #43b581;
+			color: white;
+		}
+
+		.status-idle {
+			background: #faa61a;
+			color: white;
+		}
+
+		.status-dnd {
+			background: #f04747;
+			color: white;
+		}
+
+		.status-offline {
+			background: #747f8d;
+			color: white;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="background"></canvas>
+	<h1>Insecure Badroom</h1>
+	<h2 class="subtitle">A talented group of skids</h2>
+	<img src="https://andrew.jorgensenfamily.us/files/2018/11/insecurly.svg" alt="Insecure Badroom">
+	<a href="projects.html" class="projects-btn">View Projects</a>
+
+	<div class="users-container">
+		<div class="user-card">
+			<img src="https://cdn.discordapp.com/avatars/783806897278156810/f11bf001763f6e389786b62e4113102d.png?size=4096" alt="User Avatar" class="user-avatar">
+			<div class="user-name">Cuhassle</div>
+			<div class="user-id">783806897278156810</div>
+			<span class="user-status status-online">Online</span>
+		</div>
+
+		<div class="user-card">
+			<img src="https://cdn.discordapp.com/avatars/1321922321887268995/057534361efa4ee83073fd7df155e5a0.png?size=4096" alt="User Avatar" class="user-avatar">
+			<div class="user-name">TheRegularMan1</div>
+			<div class="user-id">1321922321887268995</div>
+			<span class="user-status status-idle">Idle</span>
+		</div>
+
+		<div class="user-card">
+			<img src="https://cdn.discordapp.com/avatars/1350537346403008543/d33c91cd750c3d8690009a98e1278ca4.png?size=4096" alt="User Avatar" class="user-avatar">
+			<div class="user-name">Otqzkg</div>
+			<div class="user-id">1350537346403008543</div>
+			<span class="user-status status-dnd">Do Not Disturb</span>
+		</div>
+
+		<div class="user-card">
+			<img src="https://cdn.discordapp.com/avatars/1302369693360980030/41ff4df004b59fe00d4672e51abf242a.png?size=4096" alt="User Avatar" class="user-avatar">
+			<div class="user-name">Sydney</div>
+			<div class="user-id">1302369693360980030</div>
+			<span class="user-status status-online">Online</span>
+		</div>
+	</div>
+
+	<script>
+		const canvas = document.getElementById("background");
+        const ctx = canvas.getContext("2d");
+
+        let width, height;
+        const dots = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Dot {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = 2;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.color = "#4b8cc0";
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x + this.radius > width || this.x - this.radius < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y + this.radius > height || this.y - this.radius < 0) {
+                    this.speedY = -this.speedY;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        function createDots(num) {
+            for (let i = 0; i < num; i++) {
+                dots.push(new Dot());
+            }
+        }
+
+        function distance(dot1, dot2) {
+            const dx = dot1.x - dot2.x;
+            const dy = dot1.y - dot2.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function drawLines() {
+            for (let i = 0; i < dots.length; i++) {
+                for (let j = i + 1; j < dots.length; j++) {
+                    const dist = distance(dots[i], dots[j]);
+
+                    if (dist < 150) {
+                        const opacity = 1 - dist / 150;
+                        ctx.beginPath();
+                        ctx.moveTo(dots[i].x, dots[i].y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
+                        ctx.strokeStyle = `rgba(75, 140, 192, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].update();
+                dots[i].draw();
+            }
+            drawLines();
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        createDots(100);
+        animate();
+        
+        window.addEventListener("resize", resize);
+	</script>
+</body>
+
+</html>
