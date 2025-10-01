@@ -1,1 +1,295 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Guides - Insecure Badroom</title>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Roboto', sans-serif;
+			margin: 0;
+			background-color: #1e1f22;
+			color: white;
+			min-height: 100vh;
+			padding: 20px;
+		}
+
+		canvas {
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: -1;
+		}
+
+		.back-btn {
+			position: absolute;
+			top: 30px;
+			left: 30px;
+			display: inline-block;
+			padding: 12px 30px;
+			background: linear-gradient(135deg, #4b8cc0, #6ba8d8);
+			color: white;
+			text-decoration: none;
+			font-size: 16px;
+			font-weight: 700;
+			border-radius: 50px;
+			box-shadow: 0 4px 15px rgba(75, 140, 192, 0.4);
+			transition: all 0.3s ease;
+			letter-spacing: 1px;
+		}
+
+		.back-btn:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 6px 25px rgba(75, 140, 192, 0.6);
+		}
+
+		.hero-section {
+			display: flex;
+			align-items: center;
+			gap: 40px;
+			max-width: 1200px;
+			margin: 100px auto 60px;
+			padding: 40px;
+			background: rgba(41, 42, 45, 0.6);
+			border-radius: 20px;
+			box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+			backdrop-filter: blur(10px);
+		}
+
+		.hero-image {
+			width: 200px;
+			height: 200px;
+			border-radius: 15px;
+			object-fit: cover;
+			box-shadow: 0 4px 20px rgba(255, 34, 68, 0.3);
+			border: 3px solid #ff2244;
+		}
+
+		.hero-content {
+			flex: 1;
+		}
+
+		.hero-title {
+			font-size: 56px;
+			margin: 0 0 20px 0;
+			color: #ff2244;
+			font-weight: 700;
+			text-shadow: 0 0 20px rgba(255, 34, 68, 0.5);
+			letter-spacing: 2px;
+		}
+
+		.hero-description {
+			font-size: 18px;
+			line-height: 1.8;
+			color: #b9bbbe;
+			margin: 0;
+		}
+
+		.guides-container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		.guide-card {
+			background: rgba(41, 42, 45, 0.8);
+			border-radius: 15px;
+			padding: 30px;
+			margin-bottom: 30px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+			transition: all 0.3s ease;
+			border: 2px solid transparent;
+		}
+
+		.guide-card:hover {
+			transform: translateX(10px);
+			border: 2px solid #ff2244;
+			box-shadow: 0 6px 25px rgba(255, 34, 68, 0.3);
+		}
+
+		.guide-title {
+			font-size: 28px;
+			color: #ff6b88;
+			margin: 0 0 15px 0;
+			font-weight: 700;
+		}
+
+		.guide-description {
+			font-size: 16px;
+			color: #b9bbbe;
+			line-height: 1.6;
+			margin-bottom: 15px;
+		}
+
+		.guide-link {
+			display: inline-block;
+			padding: 10px 25px;
+			background: linear-gradient(135deg, #ff2244, #ff6b88);
+			color: white;
+			text-decoration: none;
+			font-size: 14px;
+			font-weight: 700;
+			border-radius: 50px;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 10px rgba(255, 34, 68, 0.3);
+		}
+
+		.guide-link:hover {
+			transform: scale(1.05);
+			box-shadow: 0 6px 15px rgba(255, 34, 68, 0.5);
+		}
+
+		@media (max-width: 768px) {
+			.hero-section {
+				flex-direction: column;
+				text-align: center;
+				margin-top: 80px;
+			}
+
+			.hero-title {
+				font-size: 40px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="background"></canvas>
+	<a href="index.html" class="back-btn">← Back Home</a>
+
+	<div class="hero-section">
+		<img src="https://andrew.jorgensenfamily.us/files/2018/11/insecurly.svg" alt="Guides" class="hero-image">
+		<div class="hero-content">
+			<h1 class="hero-title">Guides</h1>
+			<p class="hero-description">
+				Welcome to our comprehensive guide collection. Here you'll find step-by-step tutorials, 
+				documentation, and resources to help you navigate through various tools and exploits. 
+				Whether you're a beginner or an experienced user, our guides are designed to provide 
+				clear instructions and valuable insights for your journey.
+			</p>
+		</div>
+	</div>
+
+	<div class="guides-container">
+		<div class="guide-card">
+			<h2 class="guide-title">Getting Started</h2>
+			<p class="guide-description">
+				Learn the basics and set up your environment for the first time.
+			</p>
+			<a href="#" class="guide-link">Read Guide</a>
+		</div>
+
+		<div class="guide-card">
+			<h2 class="guide-title">Advanced Techniques</h2>
+			<p class="guide-description">
+				Dive deeper into advanced methods and optimization strategies.
+			</p>
+			<a href="#" class="guide-link">Read Guide</a>
+		</div>
+
+		<div class="guide-card">
+			<h2 class="guide-title">Troubleshooting</h2>
+			<p class="guide-description">
+				Common issues and their solutions to keep you on track.
+			</p>
+			<a href="#" class="guide-link">Read Guide</a>
+		</div>
+	</div>
+
+	<script>
+		const canvas = document.getElementById("background");
+        const ctx = canvas.getContext("2d");
+
+        let width, height;
+        const dots = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Dot {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = 2;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.color = "#4b8cc0";
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x + this.radius > width || this.x - this.radius < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y + this.radius > height || this.y - this.radius < 0) {
+                    this.speedY = -this.speedY;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        function createDots(num) {
+            for (let i = 0; i < num; i++) {
+                dots.push(new Dot());
+            }
+        }
+
+        function distance(dot1, dot2) {
+            const dx = dot1.x - dot2.x;
+            const dy = dot1.y - dot2.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function drawLines() {
+            for (let i = 0; i < dots.length; i++) {
+                for (let j = i + 1; j < dots.length; j++) {
+                    const dist = distance(dots[i], dots[j]);
+
+                    if (dist < 150) {
+                        const opacity = 1 - dist / 150;
+                        ctx.beginPath();
+                        ctx.moveTo(dots[i].x, dots[i].y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
+                        ctx.strokeStyle = `rgba(75, 140, 192, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].update();
+                dots[i].draw();
+            }
+            drawLines();
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        createDots(100);
+        animate();
+        
+        window.addEventListener("resize", resize);
+	</script>
+</body>
+
+</html>
