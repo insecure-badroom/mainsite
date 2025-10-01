@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Guide Name - Insecure Badroom</title>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Roboto', sans-serif;
+			margin: 0;
+			background-color: #1e1f22;
+			color: white;
+			min-height: 100vh;
+			padding: 20px;
+		}
+
+		canvas {
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: -1;
+		}
+
+		.back-btn {
+			position: absolute;
+			top: 30px;
+			left: 30px;
+			display: inline-block;
+			padding: 12px 30px;
+			background: linear-gradient(135deg, #4b8cc0, #6ba8d8);
+			color: white;
+			text-decoration: none;
+			font-size: 16px;
+			font-weight: 700;
+			border-radius: 50px;
+			box-shadow: 0 4px 15px rgba(75, 140, 192, 0.4);
+			transition: all 0.3s ease;
+			letter-spacing: 1px;
+			z-index: 100;
+		}
+
+		.back-btn:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 6px 25px rgba(75, 140, 192, 0.6);
+		}
+
+		.guide-container {
+			max-width: 1400px;
+			margin: 100px auto 60px;
+			padding: 20px;
+		}
+
+		.guide-header {
+			text-align: center;
+			margin-bottom: 60px;
+		}
+
+		.guide-title {
+			font-size: 64px;
+			margin: 0 0 20px 0;
+			color: #ff2244;
+			font-weight: 700;
+			text-shadow: 0 0 20px rgba(255, 34, 68, 0.5);
+			letter-spacing: 2px;
+		}
+
+		.guide-subtitle {
+			font-size: 24px;
+			color: #b9bbbe;
+			margin: 0;
+			font-style: italic;
+		}
+
+		.section {
+			background: rgba(41, 42, 45, 0.8);
+			border-radius: 20px;
+			padding: 40px;
+			margin-bottom: 40px;
+			box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+			backdrop-filter: blur(10px);
+		}
+
+		.section-with-image {
+			display: flex;
+			gap: 40px;
+			align-items: center;
+		}
+
+		.section-content {
+			flex: 1;
+		}
+
+		.section-image {
+			width: 400px;
+			border-radius: 15px;
+			box-shadow: 0 4px 20px rgba(255, 34, 68, 0.3);
+			border: 3px solid #ff2244;
+		}
+
+		.section-title {
+			font-size: 36px;
+			color: #ff6b88;
+			margin: 0 0 20px 0;
+			font-weight: 700;
+		}
+
+		.section-text {
+			font-size: 18px;
+			line-height: 1.8;
+			color: #b9bbbe;
+			margin: 0 0 20px 0;
+		}
+
+		.side-images {
+			display: flex;
+			gap: 20px;
+			margin-top: 30px;
+			flex-wrap: wrap;
+		}
+
+		.side-image {
+			width: 200px;
+			height: 200px;
+			border-radius: 10px;
+			object-fit: cover;
+			box-shadow: 0 4px 15px rgba(75, 140, 192, 0.3);
+			border: 2px solid #4b8cc0;
+			transition: all 0.3s ease;
+		}
+
+		.side-image:hover {
+			transform: scale(1.05);
+			box-shadow: 0 6px 25px rgba(75, 140, 192, 0.5);
+		}
+
+		.text-only-section {
+			background: rgba(41, 42, 45, 0.8);
+			border-radius: 20px;
+			padding: 40px;
+			margin-bottom: 40px;
+			box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+		}
+
+		.highlight-box {
+			background: rgba(255, 34, 68, 0.1);
+			border-left: 4px solid #ff2244;
+			padding: 20px;
+			margin: 20px 0;
+			border-radius: 5px;
+		}
+
+		.code-block {
+			background: #0d0e10;
+			border: 1px solid #4b8cc0;
+			border-radius: 10px;
+			padding: 20px;
+			margin: 20px 0;
+			overflow-x: auto;
+			font-family: 'Courier New', monospace;
+			color: #4b8cc0;
+		}
+
+		@media (max-width: 968px) {
+			.section-with-image {
+				flex-direction: column;
+			}
+
+			.section-image {
+				width: 100%;
+				max-width: 400px;
+			}
+
+			.guide-title {
+				font-size: 40px;
+			}
+
+			.side-image {
+				width: 150px;
+				height: 150px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="background"></canvas>
+	<a href="guides.html" class="back-btn">← Back to Guides</a>
+
+	<div class="guide-container">
+		<div class="guide-header">
+			<h1 class="guide-title">Guide Title Here</h1>
+			<p class="guide-subtitle">A brief description of what this guide covers</p>
+		</div>
+
+		<!-- Section with Image on Right -->
+		<div class="section section-with-image">
+			<div class="section-content">
+				<h2 class="section-title">Step 1: Getting Started</h2>
+				<p class="section-text">
+					This is where you explain the first step of your guide. Provide detailed instructions,
+					tips, and any important information the reader needs to know. You can write multiple
+					paragraphs here to thoroughly explain the concept.
+				</p>
+				<p class="section-text">
+					Additional information can go in separate paragraphs for better readability. Make sure
+					to include all the necessary details and warnings.
+				</p>
+			</div>
+			<img src="https://via.placeholder.com/400x300/ff2244/ffffff?text=Step+1+Image" alt="Step 1" class="section-image">
+		</div>
+
+		<!-- Section with Image on Left -->
+		<div class="section section-with-image" style="flex-direction: row-reverse;">
+			<div class="section-content">
+				<h2 class="section-title">Step 2: Configuration</h2>
+				<p class="section-text">
+					Here's the second step with the image on the left side. Continue providing clear
+					instructions and explanations. You can alternate the image position for visual variety.
+				</p>
+				<div class="highlight-box">
+					<strong>⚠️ Important Note:</strong> Use highlight boxes for critical information,
+					warnings, or tips that need special attention.
+				</div>
+			</div>
+			<img src="https://via.placeholder.com/400x300/4b8cc0/ffffff?text=Step+2+Image" alt="Step 2" class="section-image">
+		</div>
+
+		<!-- Section with Side Images -->
+		<div class="section">
+			<h2 class="section-title">Step 3: Visual Examples</h2>
+			<p class="section-text">
+				This section demonstrates how to include multiple smaller images alongside your text.
+				These side images are great for showing different views, variations, or examples related
+				to the current step.
+			</p>
+			<p class="section-text">
+				You can include as many side images as needed. They'll automatically wrap on smaller screens
+				for better mobile responsiveness.
+			</p>
+			<div class="side-images">
+				<img src="https://via.placeholder.com/200x200/ff6b88/ffffff?text=Example+1" alt="Example 1" class="side-image">
+				<img src="https://via.placeholder.com/200x200/ff6b88/ffffff?text=Example+2" alt="Example 2" class="side-image">
+				<img src="https://via.placeholder.com/200x200/ff6b88/ffffff?text=Example+3" alt="Example 3" class="side-image">
+			</div>
+		</div>
+
+		<!-- Text Only Section with Code Block -->
+		<div class="text-only-section">
+			<h2 class="section-title">Step 4: Code Examples</h2>
+			<p class="section-text">
+				Sometimes you need to include code snippets or command examples. Use the code block
+				style for these:
+			</p>
+			<div class="code-block">
+				$ cd /path/to/directory<br>
+				$ ./run-script.sh<br>
+				$ echo "Command executed successfully"
+			</div>
+			<p class="section-text">
+				Explain what the code does and any important parameters or options the user should know about.
+			</p>
+		</div>
+
+		<!-- Final Section -->
+		<div class="section">
+			<h2 class="section-title">Conclusion</h2>
+			<p class="section-text">
+				Wrap up your guide with a summary of what was covered and any final thoughts or next steps.
+				This helps reinforce the key points and gives users a clear path forward.
+			</p>
+			<div class="highlight-box">
+				<strong>✅ Success!</strong> You've completed this guide. Check out our other guides for more
+				advanced topics and techniques.
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const canvas = document.getElementById("background");
+        const ctx = canvas.getContext("2d");
+
+        let width, height;
+        const dots = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Dot {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = 2;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.color = "#4b8cc0";
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x + this.radius > width || this.x - this.radius < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y + this.radius > height || this.y - this.radius < 0) {
+                    this.speedY = -this.speedY;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        function createDots(num) {
+            for (let i = 0; i < num; i++) {
+                dots.push(new Dot());
+            }
+        }
+
+        function distance(dot1, dot2) {
+            const dx = dot1.x - dot2.x;
+            const dy = dot1.y - dot2.y;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        function drawLines() {
+            for (let i = 0; i < dots.length; i++) {
+                for (let j = i + 1; j < dots.length; j++) {
+                    const dist = distance(dots[i], dots[j]);
+
+                    if (dist < 150) {
+                        const opacity = 1 - dist / 150;
+                        ctx.beginPath();
+                        ctx.moveTo(dots[i].x, dots[i].y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
+                        ctx.strokeStyle = `rgba(75, 140, 192, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].update();
+                dots[i].draw();
+            }
+            drawLines();
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        createDots(100);
+        animate();
+        
+        window.addEventListener("resize", resize);
+	</script>
+</body>
+
+</html>
