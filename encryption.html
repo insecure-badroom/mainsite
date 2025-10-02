@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuhassle's RSA-OAEP External Key Encryption (Thanks Gemini)</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
+        h1, h2 { color: #333; }
+        .container { display: flex; gap: 20px; margin-bottom: 20px; }
+        .key-box, .section { flex: 1; border: 1px solid #ddd; padding: 15px; border-radius: 8px; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .key-box h2 { margin-top: 0; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+        code { display: block; white-space: pre-wrap; word-break: break-all; background-color: #eee; padding: 10px; border-radius: 4px; font-size: 10px; line-height: 1.3; }
+        textarea { width: 100%; height: 100px; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; resize: vertical; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        .warning { color: darkred; font-weight: bold; margin-top: 20px; border: 2px solid darkred; padding: 15px; border-radius: 6px; background-color: #ffe0e0; }
+        .key-info { font-size: 0.8em; color: #555; margin-bottom: 10px; }
+        .input-key-box { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Cuhassle's RSA-OAEP External Key Encryption (Thanks Gemini)</h1>
+    <p>A new key pair is generated on page load. Use the Encryption section to send a message to any user</p>
+
+    <div class="warning">
+        <h2>SECURITY WARNING:</h2>
+        <p>Never expose your real Private Key!</p>
+    </div>
+    
+    <div class="container">
+        <div class="key-box">
+            <h2>Your Public Key (Generated)</h2>
+            <div class="key-info">Give this out (Copied below)</div>
+            <code id="publicKeyOutput">Generating...</code>
+        </div>
+
+        <div class="key-box">
+            <h2>Your Private Key (Secret)</h2>
+            <div class="key-info">Used to decrypt messages.</div>
+            <code id="privateKeyOutput">Generating...</code>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Encryption (Sending a message)</h2>
+            <div class="input-key-box">
+                <p>Paste the Recipient's Public Key here:</p>
+                <textarea id="otherPublicKeyInput" placeholder="Paste the recipient's public key (SPKI format) here."></textarea>
+                <div class="key-info">Hint: The key above is automatically pasted here on load for easy testing.</div>
+            </div>
+            
+            <p>Enter plaintext to encrypt:</p>
+            <textarea id="plaintextInput" placeholder="Enter the secret message..."></textarea>
+            <button onclick="encryptText()">Encrypt Text using Recipient's Public Key</button>
+            
+            <p style="margin-top: 15px;">Encrypted (Base64 Ciphertext):</p>
+            <textarea id="ciphertextOutput" readonly placeholder="Encrypted message will appear here..."></textarea>
+        </div>
+
+        <div class="section">
+            <h2>Decryption (Receiving a message)</h2>
+            <p>Paste the encrypted text:</p>
+            <textarea id="ciphertextInput" placeholder="Paste the Base64 ciphertext here..."></textarea>
+            <button onclick="decryptText()">Decrypt Text using your Private Key</button>
+            <p style="margin-top: 15px;">Decrypted Plaintext:</p>
+            <textarea id="decryptedOutput" readonly placeholder="Decrypted message will appear here..."></textarea>
+        </div>
+    </div>
+
+    <script>
+        // Global variables to hold the key objects (not the raw text)
+        let privateKey;
+        const ALGORITHM_NAME = "RSA-OAEP"; // Standard for Asymmetric Encryption
+
+        // --- Utility Functions ---
+
+        /** Converts a Base64 string to a raw ArrayBuffer (binary data) */
+        function base64ToArrayBuffer(base64) {
+            const binary_string = window.atob(base64);
+            const len = binary_string.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        /** Converts a raw ArrayBuffer to a Base64 string */
+        function arrayBufferToBase64(buffer) {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        }
+
+        /** Converts a string to an ArrayBuffer for crypto operations */
+        function strToArrayBuffer(str) {
+            return new TextEncoder().encode(str);
+        }
+
+        /** Converts an ArrayBuffer back to a string */
+        function arrayBufferToStr(buffer) {
+            return new TextDecoder().decode(buffer);
+        }
+
+        // --- Key Generation ---
+
+        /** Generates a new RSA-OAEP key pair, displays them, and stores the private key globally */
+        async function generateAndDisplayKeys() {
+            try {
+                const keyPair = await crypto.subtle.generateKey(
+                    {
+                        name: ALGORITHM_NAME,
+                        modulusLength: 2048,
+                        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+                        hash: "SHA-256",
+                    },
+                    true, // Extractable: true (Allows exporting)
+                    ["encrypt", "decrypt"]
+                );
+
+                // We only store the private key object globally for decryption
+                privateKey = keyPair.privateKey;
+
+                // Export and display the keys for demonstration
+                const publicKeyBuffer = await crypto.subtle.exportKey("spki", keyPair.publicKey);
+                const privateKeyBuffer = await crypto.subtle.exportKey("pkcs8", privateKey);
+
+                const publicKeyBase64 = arrayBufferToBase64(publicKeyBuffer);
+
+                document.getElementById('publicKeyOutput').textContent = publicKeyBase64;
+                document.getElementById('privateKeyOutput').textContent = arrayBufferToBase64(privateKeyBuffer);
+                
+                // AUTO-POPULATE the input box with its own public key for easy testing
+                document.getElementById('otherPublicKeyInput').value = publicKeyBase64;
+                
+            } catch (error) {
+                console.error("Error generating keys:", error);
+                document.getElementById('publicKeyOutput').textContent = "ERROR: Failed to generate keys.";
+                document.getElementById('privateKeyOutput').textContent = "ERROR: Failed to generate keys.";
+            }
+        }
+
+        // --- Encryption Handler ---
+
+        /** Encrypts the plaintext using an arbitrary Public Key provided in the input box */
+        async function encryptText() {
+            const plaintext = document.getElementById('plaintextInput').value;
+            const publicKeyBase64 = document.getElementById('otherPublicKeyInput').value;
+
+            if (!publicKeyBase64) {
+                alert("Please enter a recipient's Public Key.");
+                return;
+            }
+            
+            try {
+                // 1. Convert the Base64 key string into an ArrayBuffer
+                const publicKeyBuffer = base64ToArrayBuffer(publicKeyBase64);
+
+                // 2. Import the key to create a CryptoKey object for encryption
+                const recipientPublicKey = await crypto.subtle.importKey(
+                    "spki", // Key format
+                    publicKeyBuffer,
+                    { name: ALGORITHM_NAME, hash: "SHA-256" },
+                    true, // Extractable
+                    ["encrypt"] // Key usage
+                );
+
+                // 3. Convert plaintext to ArrayBuffer
+                const plaintextBuffer = strToArrayBuffer(plaintext);
+                
+                // 4. Perform Encryption using the imported key
+                const ciphertextBuffer = await crypto.subtle.encrypt(
+                    { name: ALGORITHM_NAME },
+                    recipientPublicKey, // *** Using the imported recipient's public key ***
+                    plaintextBuffer
+                );
+
+                // 5. Convert the binary result to Base64 for display/transfer
+                const ciphertextBase64 = arrayBufferToBase64(ciphertextBuffer);
+                document.getElementById('ciphertextOutput').value = ciphertextBase64;
+                document.getElementById('ciphertextInput').value = ciphertextBase64; // Auto-populate decryption box
+            } catch (error) {
+                alert("Encryption failed. Check console for details. (Did you use a valid public key?)");
+                console.error("Encryption error:", error);
+            }
+        }
+
+        // --- Decryption Handler ---
+
+        /** Decrypts the ciphertext using the globally stored Private Key (User A's) */
+        async function decryptText() {
+            const ciphertextBase64 = document.getElementById('ciphertextInput').value;
+            
+            if (!privateKey) {
+                alert("Private Key not yet generated!");
+                return;
+            }
+
+            try {
+                // Convert Base64 back to binary for decryption
+                const ciphertextBuffer = base64ToArrayBuffer(ciphertextBase64);
+
+                // Decryption using the globally stored Private Key
+                const decryptedBuffer = await crypto.subtle.decrypt(
+                    { name: ALGORITHM_NAME },
+                    privateKey,
+                    ciphertextBuffer
+                );
+
+                // Convert the binary result back to a string
+                const decryptedText = arrayBufferToStr(decryptedBuffer);
+                document.getElementById('decryptedOutput').value = decryptedText;
+            } catch (error) {
+                alert("Decryption failed. This usually means the ciphertext is invalid or the key is wrong. Check console for details.");
+                console.error("Decryption error:", error);
+                document.getElementById('decryptedOutput').value = "!!! DECRYPTION FAILED !!!";
+            }
+        }
+
+        // Initialize the key generation on page load
+        window.onload = generateAndDisplayKeys;
+    </script>
+</body>
+</html>
