@@ -5,315 +5,517 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Insecure Badroom</title>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 	<style>
-		body {
-			font-family: 'Roboto', sans-serif;
-			text-align: center;
+		* {
 			margin: 0;
-			background-color: #1e1f22;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Inter', sans-serif;
+			margin: 0;
+			background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
 			color: white;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
+			overflow-x: hidden;
 			min-height: 100vh;
-			padding: 20px;
 		}
 
 		canvas {
 			position: fixed;
 			top: 0;
 			left: 0;
-			z-index: -1;
+			z-index: 0;
+			opacity: 0.3;
+		}
+
+		.container {
+			position: relative;
+			z-index: 1;
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 60px 20px;
+		}
+
+		.hero-section {
+			text-align: center;
+			margin-bottom: 80px;
+			animation: fadeInDown 1s ease;
+		}
+
+		@keyframes fadeInDown {
+			from {
+				opacity: 0;
+				transform: translateY(-30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
 		}
 
 		h1 {
-			font-size: 64px;
-			margin-bottom: 10px;
+			font-size: clamp(48px, 8vw, 96px);
+			margin-bottom: 15px;
 			user-select: none;
-			color: #ff2244;
-			font-weight: 700;
-			text-shadow: 0 0 20px rgba(255, 34, 68, 0.5),
-				0 0 40px rgba(255, 34, 68, 0.3);
-			letter-spacing: 2px;
-		}
-
-		.subtitle {
-			font-size: 28px;
-			margin-bottom: 30px;
-			margin-top: 0;
-			background: linear-gradient(45deg, #ff2244, #ff6b88, #ff2244);
-			background-size: 200% 200%;
+			font-weight: 900;
+			background: linear-gradient(135deg, #ff2244, #ff6b88, #ff2244, #ff6b88);
+			background-size: 300% 300%;
 			-webkit-background-clip: text;
 			background-clip: text;
 			-webkit-text-fill-color: transparent;
-			font-weight: 400;
-			font-style: italic;
-			animation: gradientShift 3s ease infinite;
-			letter-spacing: 1px;
+			animation: gradientFlow 4s ease infinite;
+			letter-spacing: -2px;
+			text-transform: uppercase;
+			filter: drop-shadow(0 0 30px rgba(255, 34, 68, 0.5));
 		}
 
-		@keyframes gradientShift {
-			0% {
+		@keyframes gradientFlow {
+			0%, 100% {
 				background-position: 0% 50%;
 			}
-
 			50% {
 				background-position: 100% 50%;
 			}
-
-			100% {
-				background-position: 0% 50%;
-			}
 		}
 
-		.projects-btn {
-			display: inline-block;
-			margin: 30px 0;
-			padding: 15px 40px;
-			background: linear-gradient(135deg, #ff2244, #ff6b88);
-			color: white;
-			text-decoration: none;
-			font-size: 20px;
-			font-weight: 700;
-			border-radius: 50px;
-			box-shadow: 0 4px 15px rgba(255, 34, 68, 0.4);
-			transition: all 0.3s ease;
-			position: relative;
-			overflow: hidden;
+		.subtitle {
+			font-size: clamp(20px, 3vw, 32px);
+			margin-bottom: 40px;
+			color: rgba(255, 255, 255, 0.8);
+			font-weight: 400;
+			font-style: italic;
 			letter-spacing: 1px;
 		}
 
-		.projects-btn:before {
+		.logo-container {
+			margin: 40px 0;
+			animation: float 3s ease-in-out infinite;
+		}
+
+		@keyframes float {
+			0%, 100% {
+				transform: translateY(0px);
+			}
+			50% {
+				transform: translateY(-20px);
+			}
+		}
+
+		.logo-container img {
+			max-width: 300px;
+			width: 80%;
+			border-radius: 20px;
+			box-shadow: 0 20px 60px rgba(255, 34, 68, 0.3);
+			transition: all 0.4s ease;
+		}
+
+		.logo-container img:hover {
+			transform: scale(1.05) rotate(2deg);
+			box-shadow: 0 25px 80px rgba(255, 34, 68, 0.5);
+		}
+
+		.nav-buttons {
+			display: flex;
+			gap: 20px;
+			justify-content: center;
+			flex-wrap: wrap;
+			margin-top: 40px;
+		}
+
+		.btn {
+			display: inline-block;
+			padding: 18px 45px;
+			background: linear-gradient(135deg, #ff2244, #ff6b88);
+			color: white;
+			text-decoration: none;
+			font-size: 18px;
+			font-weight: 700;
+			border-radius: 50px;
+			box-shadow: 0 10px 30px rgba(255, 34, 68, 0.4);
+			transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+			position: relative;
+			overflow: hidden;
+			letter-spacing: 0.5px;
+			text-transform: uppercase;
+		}
+
+		.btn::before {
 			content: '';
 			position: absolute;
-			top: 0;
-			left: -100%;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-			transition: left 0.5s ease;
+			top: 50%;
+			left: 50%;
+			width: 0;
+			height: 0;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.3);
+			transform: translate(-50%, -50%);
+			transition: width 0.6s, height 0.6s;
 		}
 
-		.projects-btn:hover {
-			transform: translateY(-3px);
-			box-shadow: 0 6px 25px rgba(255, 34, 68, 0.6);
+		.btn:hover::before {
+			width: 300px;
+			height: 300px;
 		}
 
-		.projects-btn:hover:before {
-			left: 100%;
+		.btn:hover {
+			transform: translateY(-5px) scale(1.05);
+			box-shadow: 0 15px 40px rgba(255, 34, 68, 0.6);
 		}
 
-		img {
-			max-width: 500px;
-			width: 90%;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+		.btn span {
+			position: relative;
+			z-index: 1;
 		}
 
-		.users-container {
-			margin-top: 50px;
-			display: flex;
-			gap: 30px;
-			flex-wrap: wrap;
-			justify-content: center;
+		.section-title {
+			text-align: center;
+			font-size: clamp(32px, 5vw, 48px);
+			font-weight: 900;
+			margin-bottom: 50px;
+			background: linear-gradient(135deg, #00f2ff, #4facfe);
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			letter-spacing: -1px;
+			text-transform: uppercase;
+		}
+
+		.team-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 40px;
+			margin-bottom: 80px;
 		}
 
 		.user-card {
-			background: rgba(41, 42, 45, 0.8);
-			border-radius: 15px;
-			padding: 20px;
-			width: 200px;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-			transition: transform 0.3s ease;
+			background: rgba(255, 255, 255, 0.05);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			border-radius: 20px;
+			padding: 30px;
+			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			position: relative;
+			overflow: hidden;
+		}
+
+		.user-card::before {
+			content: '';
+			position: absolute;
+			top: -50%;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			background: radial-gradient(circle, rgba(255, 34, 68, 0.1) 0%, transparent 70%);
+			opacity: 0;
+			transition: opacity 0.4s ease;
+		}
+
+		.user-card:hover::before {
+			opacity: 1;
 		}
 
 		.user-card:hover {
-			transform: translateY(-5px);
+			transform: translateY(-10px) scale(1.02);
+			border-color: rgba(255, 34, 68, 0.5);
+			box-shadow: 0 20px 50px rgba(255, 34, 68, 0.3);
 		}
 
 		.user-avatar {
-			width: 100px;
-			height: 100px;
+			width: 120px;
+			height: 120px;
 			border-radius: 50%;
-			margin: 0 auto 15px;
+			margin: 0 auto 20px;
 			display: block;
-			border: 3px solid #4b8cc0;
+			border: 4px solid transparent;
+			background: linear-gradient(135deg, #ff2244, #4facfe) border-box;
+			-webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+			mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+			-webkit-mask-composite: xor;
+			mask-composite: exclude;
+			transition: all 0.3s ease;
+		}
+
+		.user-card:hover .user-avatar {
+			transform: scale(1.1) rotate(5deg);
 		}
 
 		.user-name {
-			font-size: 18px;
+			font-size: 22px;
 			font-weight: 700;
-			margin-bottom: 5px;
+			margin-bottom: 8px;
 			color: #fff;
+			text-align: center;
 		}
 
 		.user-id {
 			font-size: 12px;
-			color: #888;
-			margin-bottom: 10px;
+			color: rgba(255, 255, 255, 0.5);
+			margin-bottom: 15px;
+			text-align: center;
+			font-family: 'Roboto Mono', monospace;
 		}
 
 		.user-status {
 			display: inline-block;
-			padding: 5px 12px;
-			border-radius: 12px;
-			font-size: 12px;
+			padding: 8px 16px;
+			border-radius: 20px;
+			font-size: 13px;
 			font-weight: 600;
+			text-align: center;
+			width: 100%;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
 		}
 
 		.status-online {
-			background: #43b581;
-			color: white;
+			background: linear-gradient(135deg, #43b581, #5cc898);
+			box-shadow: 0 4px 15px rgba(67, 181, 129, 0.3);
 		}
 
 		.status-idle {
-			background: #faa61a;
-			color: white;
+			background: linear-gradient(135deg, #faa61a, #ffc145);
+			box-shadow: 0 4px 15px rgba(250, 166, 26, 0.3);
 		}
 
 		.status-dnd {
-			background: #f04747;
-			color: white;
+			background: linear-gradient(135deg, #f04747, #ff6b6b);
+			box-shadow: 0 4px 15px rgba(240, 71, 71, 0.3);
 		}
 
 		.status-offline {
-			background: #747f8d;
+			background: linear-gradient(135deg, #747f8d, #99a1ac);
+			box-shadow: 0 4px 15px rgba(116, 127, 141, 0.3);
+		}
+
+		.projects-section {
+			margin-top: 80px;
+		}
+
+		.projects-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 30px;
+		}
+
+		.project-card {
+			background: rgba(255, 255, 255, 0.05);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			border-radius: 20px;
+			padding: 30px;
+			transition: all 0.3s ease;
+			text-decoration: none;
 			color: white;
+			display: block;
+		}
+
+		.project-card:hover {
+			transform: translateY(-5px);
+			border-color: rgba(77, 172, 254, 0.5);
+			box-shadow: 0 15px 40px rgba(77, 172, 254, 0.3);
+		}
+
+		.project-title {
+			font-size: 24px;
+			font-weight: 700;
+			margin-bottom: 10px;
+			color: #4facfe;
+		}
+
+		.project-desc {
+			font-size: 14px;
+			color: rgba(255, 255, 255, 0.7);
+			line-height: 1.6;
+		}
+
+		@media (max-width: 768px) {
+			.team-grid {
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 25px;
+			}
+			
+			h1 {
+				letter-spacing: -1px;
+			}
 		}
 	</style>
 </head>
 
 <body>
 	<canvas id="background"></canvas>
-	<h1>Insecure Badroom</h1>
-	<h2 class="subtitle">A talented group of skids</h2>
-	<img src="favicon.ico">
-	<a href="projects.html" class="projects-btn">View Projects</a>
-	<a href="guides.html" class="projects-btn">Guides</a>
-
-	<div class="users-container">
-		<div class="user-card">
-			<img src="https://cdn.discordapp.com/avatars/783806897278156810/f11bf001763f6e389786b62e4113102d.png?size=4096" alt="User Avatar" class="user-avatar">
-			<div class="user-name">Cuhassle</div>
-			<div class="user-id">783806897278156810</div>
-			<span class="user-status status-online">Online</span>
+	
+	<div class="container">
+		<div class="hero-section">
+			<h1>Insecure Badroom</h1>
+			<h2 class="subtitle">We don't like securly.</h2>
+			<div class="logo-container">
+				<img src="favicon.ico" alt="Insecure Badroom Logo">
+			</div>
+			<div class="nav-buttons">
+				<a href="projects.html" class="btn"><span>View Projects</span></a>
+				<a href="guides.html" class="btn"><span>Guides</span></a>
+			</div>
 		</div>
 
-		<div class="user-card">
-			<img src="https://cdn.discordapp.com/avatars/1321922321887268995/057534361efa4ee83073fd7df155e5a0.png?size=4096" alt="User Avatar" class="user-avatar">
-			<div class="user-name">TheRegularMan1</div>
-			<div class="user-id">1321922321887268995</div>
-			<span class="user-status status-idle">Idle</span>
+		<h2 class="section-title">Members</h2>
+		<div class="team-grid">
+			<div class="user-card">
+				<img src="https://cdn.discordapp.com/avatars/783806897278156810/f11bf001763f6e389786b62e4113102d.png?size=4096" alt="Cuhassle Avatar" class="user-avatar">
+				<div class="user-name">Cuhassle</div>
+				<div class="user-id">783806897278156810</div>
+				<span class="user-status status-online">Online</span>
+			</div>
+
+			<div class="user-card">
+				<img src="https://cdn.discordapp.com/avatars/1321922321887268995/057534361efa4ee83073fd7df155e5a0.png?size=4096" alt="TheRegularMan1 Avatar" class="user-avatar">
+				<div class="user-name">TheRegularMan1</div>
+				<div class="user-id">1321922321887268995</div>
+				<span class="user-status status-idle">Idle</span>
+			</div>
+
+			<div class="user-card">
+				<img src="https://cdn.discordapp.com/avatars/1350537346403008543/d33c91cd750c3d8690009a98e1278ca4.png?size=4096" alt="Otqzkg Avatar" class="user-avatar">
+				<div class="user-name">Otqzkg</div>
+				<div class="user-id">1350537346403008543</div>
+				<span class="user-status status-dnd">Do Not Disturb</span>
+			</div>
+
+			<div class="user-card">
+				<img src="https://cdn.discordapp.com/avatars/1302369693360980030/41ff4df004b59fe00d4672e51abf242a.png?size=4096" alt="Sydney Avatar" class="user-avatar">
+				<div class="user-name">Sydney</div>
+				<div class="user-id">1302369693360980030</div>
+				<span class="user-status status-online">Online</span>
+			</div>
+
+			<div class="user-card">
+				<img src="https://cdn.discordapp.com/avatars/1400878053638410330/a_default.png?size=4096" alt="Exploit-Master12 Avatar" class="user-avatar">
+				<div class="user-name">Exploit-Master12</div>
+				<div class="user-id">1400878053638410330</div>
+				<span class="user-status status-online">Online</span>
+			</div>
 		</div>
 
-		<div class="user-card">
-			<img src="https://cdn.discordapp.com/avatars/1350537346403008543/d33c91cd750c3d8690009a98e1278ca4.png?size=4096" alt="User Avatar" class="user-avatar">
-			<div class="user-name">Otqzkg</div>
-			<div class="user-id">1350537346403008543</div>
-			<span class="user-status status-dnd">Do Not Disturb</span>
-		</div>
-
-		<div class="user-card">
-			<img src="https://cdn.discordapp.com/avatars/1302369693360980030/41ff4df004b59fe00d4672e51abf242a.png?size=4096" alt="User Avatar" class="user-avatar">
-			<div class="user-name">Sydney</div>
-			<div class="user-id">1302369693360980030</div>
-			<span class="user-status status-online">Online</span>
+		<div class="projects-section">
+			<h2 class="section-title">Featured Projects</h2>
+			<div class="projects-grid">
+				<a href="https://github.com/insecure-badroom/falaris-stash" class="project-card" target="_blank">
+					<div class="project-title">Falaris Stash</div>
+					<div class="project-desc">Advanced file management and organization system with powerful features.</div>
+				</a>
+				<a href="https://github.com/insecure-badroom/Calcite" class="project-card" target="_blank">
+					<div class="project-title">Calcite</div>
+					<div class="project-desc">High-performance computing framework for modern applications.</div>
+				</a>
+			</div>
 		</div>
 	</div>
 
 	<script>
 		const canvas = document.getElementById("background");
-        const ctx = canvas.getContext("2d");
+		const ctx = canvas.getContext("2d");
 
-        let width, height;
-        const dots = [];
+		let width, height;
+		const particles = [];
+		const particleCount = 60;
+		const connectionDistance = 140;
 
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
+		function resize() {
+			width = window.innerWidth;
+			height = window.innerHeight;
+			canvas.width = width;
+			canvas.height = height;
+		}
 
-        class Dot {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.radius = 2;
-                this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2;
-                this.color = "#4b8cc0";
-            }
+		class Particle {
+			constructor() {
+				this.x = Math.random() * width;
+				this.y = Math.random() * height;
+				this.radius = Math.random() * 2 + 1;
+				this.speedX = (Math.random() - 0.5) * 1.2;
+				this.speedY = (Math.random() - 0.5) * 1.2;
+				this.hue = Math.random() * 60 + 320;
+			}
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+			update() {
+				this.x += this.speedX;
+				this.y += this.speedY;
 
-                if (this.x + this.radius > width || this.x - this.radius < 0) {
-                    this.speedX = -this.speedX;
-                }
-                if (this.y + this.radius > height || this.y - this.radius < 0) {
-                    this.speedY = -this.speedY;
-                }
-            }
+				if (this.x + this.radius > width || this.x - this.radius < 0) {
+					this.speedX = -this.speedX;
+				}
+				if (this.y + this.radius > height || this.y - this.radius < 0) {
+					this.speedY = -this.speedY;
+				}
+			}
 
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
+			draw() {
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+				ctx.fillStyle = `hsla(${this.hue}, 100%, 60%, 0.7)`;
+				ctx.shadowBlur = 8;
+				ctx.shadowColor = `hsla(${this.hue}, 100%, 60%, 0.4)`;
+				ctx.fill();
+				ctx.closePath();
+				ctx.shadowBlur = 0;
+			}
+		}
 
-        function createDots(num) {
-            for (let i = 0; i < num; i++) {
-                dots.push(new Dot());
-            }
-        }
+		function init() {
+			particles.length = 0;
+			for (let i = 0; i < particleCount; i++) {
+				particles.push(new Particle());
+			}
+		}
 
-        function distance(dot1, dot2) {
-            const dx = dot1.x - dot2.x;
-            const dy = dot1.y - dot2.y;
-            return Math.sqrt(dx * dx + dy * dy);
-        }
+		function drawConnections() {
+			for (let i = 0; i < particles.length; i++) {
+				for (let j = i + 1; j < particles.length; j++) {
+					const dx = particles[i].x - particles[j].x;
+					const dy = particles[i].y - particles[j].y;
+					const dist = Math.sqrt(dx * dx + dy * dy);
 
-        function drawLines() {
-            for (let i = 0; i < dots.length; i++) {
-                for (let j = i + 1; j < dots.length; j++) {
-                    const dist = distance(dots[i], dots[j]);
+					if (dist < connectionDistance) {
+						const opacity = (1 - dist / connectionDistance) * 0.4;
+						ctx.beginPath();
+						ctx.moveTo(particles[i].x, particles[i].y);
+						ctx.lineTo(particles[j].x, particles[j].y);
+						const gradient = ctx.createLinearGradient(
+							particles[i].x, particles[i].y,
+							particles[j].x, particles[j].y
+						);
+						gradient.addColorStop(0, `hsla(${particles[i].hue}, 100%, 60%, ${opacity})`);
+						gradient.addColorStop(1, `hsla(${particles[j].hue}, 100%, 60%, ${opacity})`);
+						ctx.strokeStyle = gradient;
+						ctx.lineWidth = 1;
+						ctx.stroke();
+						ctx.closePath();
+					}
+				}
+			}
+		}
 
-                    if (dist < 150) {
-                        const opacity = 1 - dist / 150;
-                        ctx.beginPath();
-                        ctx.moveTo(dots[i].x, dots[i].y);
-                        ctx.lineTo(dots[j].x, dots[j].y);
-                        ctx.strokeStyle = `rgba(75, 140, 192, ${opacity})`;
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-                        ctx.closePath();
-                    }
-                }
-            }
-        }
+		function animate() {
+			ctx.clearRect(0, 0, width, height);
+			
+			particles.forEach(p => {
+				p.update();
+				p.draw();
+			});
+			
+			drawConnections();
+			requestAnimationFrame(animate);
+		}
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].update();
-                dots[i].draw();
-            }
-            drawLines();
-            requestAnimationFrame(animate);
-        }
+		resize();
+		init();
+		animate();
 
-        resize();
-        createDots(100);
-        animate();
-        
-        window.addEventListener("resize", resize);
+		window.addEventListener("resize", () => {
+			resize();
+			init();
+		});
 	</script>
 </body>
 
